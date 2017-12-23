@@ -25,11 +25,13 @@ public class MapBalloonAdapter implements InfoWindowAdapter {
     private LatoBoldTextViewCustom textName;
     private LatoRegularTextViewCustom textAddress;
     private List<PlaceItem> mData = Collections.emptyList();
+    private Integer position;
 
-    public MapBalloonAdapter(Context context, LayoutInflater inflater, List<PlaceItem> data) {
+    public MapBalloonAdapter(Context context, LayoutInflater inflater, List<PlaceItem> data, Integer position) {
         this.context = context;
         this.inflater = inflater;
         this.mData = data;
+        this.position = position;
     }
 
     private void initView(View itemView) {
@@ -42,13 +44,21 @@ public class MapBalloonAdapter implements InfoWindowAdapter {
         View v = inflater.inflate(R.layout.widget_balloon_map, null);
         initView(v);
         if (marker != null) {
-            for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
-                if (marker.getPosition().latitude == placeItem.getLat() && marker.getPosition().longitude == placeItem.getLng()) {
-                    textName.setText(placeItem.getName());
-                    textAddress.setText(placeItem.getAddress());
+            if (position == null) {
+                for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
+                    if (marker.getPosition().latitude == placeItem.getLat() && marker.getPosition().longitude == placeItem.getLng()) {
+                        textName.setText(placeItem.getName());
+                        textAddress.setText(placeItem.getAddress());
+                    }
+                }
+            } else {
+                if (marker.getPosition().latitude == mData.get(position).getLat() && marker.getPosition().longitude == mData.get(position).getLng()) {
+                    textName.setText(mData.get(position).getName());
+                    textAddress.setText(mData.get(position).getAddress());
                 }
             }
         }
+
         return (v);
     }
 

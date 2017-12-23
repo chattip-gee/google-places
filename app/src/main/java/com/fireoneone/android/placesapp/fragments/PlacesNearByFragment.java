@@ -5,16 +5,18 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 
 import com.fireoneone.android.placesapp.R;
+import com.fireoneone.android.placesapp.activities.GoogleMapActivity;
 import com.fireoneone.android.placesapp.adapters.PlacesViewAdapter;
 import com.fireoneone.android.placesapp.bases.BaseFragment;
 import com.fireoneone.android.placesapp.controller.PlacesController;
 import com.fireoneone.android.placesapp.databinding.FragmentPlacesNearbyBinding;
 import com.fireoneone.android.placesapp.managers.Contextor;
+import com.fireoneone.android.placesapp.utils.Constant;
 
 public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBinding> {
+    private int numberOfColumns = 1;
     GridLayoutManager mLayoutManager;
     PlacesViewAdapter placesViewAdapter;
-    private int numberOfColumns = 1;
 
     @Override
     protected void afterLoadContentView(View view, Bundle savedInstanceState) {
@@ -45,6 +47,17 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
 
     private void initEvent() {
         refreshData();
+        placesViewAdapter.setClickListener(new PlacesViewAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                GoogleMapActivity.present(Contextor.getInstance().getContext(), Constant.SELECTED_PLACE_KEY, position, new GoogleMapActivity.GoogleMapActivityListener() {
+                    @Override
+                    public void userBackPress() {
+
+                    }
+                });
+            }
+        });
     }
 
     private void refreshData() {

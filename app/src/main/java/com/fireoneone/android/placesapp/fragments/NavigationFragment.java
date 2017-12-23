@@ -47,7 +47,7 @@ public class NavigationFragment extends BaseFragment<FragmentNavigationBinding> 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fab) {
-            GoogleMapActivity.present(Contextor.getInstance().getContext(), new GoogleMapActivity.GoogleMapActivityListener() {
+            GoogleMapActivity.present(Contextor.getInstance().getContext(), "", null, new GoogleMapActivity.GoogleMapActivityListener() {
                 @Override
                 public void userBackPress() {
 

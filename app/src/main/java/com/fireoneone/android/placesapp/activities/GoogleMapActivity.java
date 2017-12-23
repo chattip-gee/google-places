@@ -8,6 +8,7 @@ import com.fireoneone.android.placesapp.FireOneOneSDK;
 import com.fireoneone.android.placesapp.R;
 import com.fireoneone.android.placesapp.bases.BaseActivity;
 import com.fireoneone.android.placesapp.fragments.GoogleMapFragment;
+import com.fireoneone.android.placesapp.utils.Constant;
 
 public class GoogleMapActivity extends BaseActivity {
 
@@ -15,11 +16,13 @@ public class GoogleMapActivity extends BaseActivity {
         void userBackPress();
     }
 
-    public static void present(Context context, GoogleMapActivityListener listener) {
+    public static void present(Context context, String selectedPlace, Integer position, GoogleMapActivityListener listener) {
         FireOneOneSDK.instance().setGoogleMapActivityListener(listener);
 
         Intent intent = new Intent();
         intent.setClass(context, GoogleMapActivity.class);
+        intent.putExtra(Constant.BUNDLE_SELECTED_PLACE, selectedPlace);
+        intent.putExtra(Constant.BUNDLE_PLACE_ID, position);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -29,7 +32,10 @@ public class GoogleMapActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setCustomActionBar(getLayoutInflater().inflate(R.layout.actionbar_with_back, null, false));
         setActionbarTitle(getResources().getString(R.string.title_select_location));
-        replaceFragment(R.id.fragment_container, new GoogleMapFragment());
+
+        GoogleMapFragment googleMapFragment = new GoogleMapFragment();
+        googleMapFragment.setArguments(getIntent().getExtras());
+        replaceFragment(R.id.fragment_container, googleMapFragment);
     }
 
     @Override

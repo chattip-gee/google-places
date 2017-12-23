@@ -10,6 +10,8 @@ import com.fireoneone.android.placesapp.controller.PlacesController;
 import com.fireoneone.android.placesapp.databinding.FragmentGoogleMapBinding;
 import com.fireoneone.android.placesapp.managers.Contextor;
 import com.fireoneone.android.placesapp.model.PlaceItem;
+import com.fireoneone.android.placesapp.utils.Constant;
+import com.fireoneone.android.placesapp.utils.Validator;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -55,10 +57,27 @@ public class GoogleMapFragment extends BaseFragment<FragmentGoogleMapBinding> im
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BANGKOK, 10));
         mMap.setOnMarkerClickListener(this);
+
+        if (Validator.isNullOrEmpty(getBundleSelectedPlace())) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BANGKOK, 10));
+        } else {
+            double lat = PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLat();
+            double lng = PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLng();
+            LatLng nearby = new LatLng(lat, lng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(nearby, 20));
+        }
+
         doMarker();
         setupInfoWindowClickListener();
+    }
+
+    private Integer getBundlePlaceId() {
+        return getArguments().getInt(Constant.BUNDLE_PLACE_ID);
+    }
+
+    private String getBundleSelectedPlace() {
+        return getArguments().getString(Constant.BUNDLE_SELECTED_PLACE);
     }
 
     private void setupInfoWindowClickListener() {
@@ -71,17 +90,30 @@ public class GoogleMapFragment extends BaseFragment<FragmentGoogleMapBinding> im
     }
 
     private void doMarker() {
-        for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
+        if (Validator.isNullOrEmpty(getBundleSelectedPlace())) {
+            for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(placeItem.getLat(), placeItem.getLng()))
+                        .title(placeItem.getName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
+            }
+        } else {
             mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(placeItem.getLat(), placeItem.getLng()))
-                    .title(placeItem.getName())
+                    .position(new LatLng(PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLat(),
+                            PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLng()))
+                    .title(PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getName())
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
         }
     }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        mMap.setInfoWindowAdapter(new MapBalloonAdapter(Contextor.getInstance().getContext(), getActivity().getLayoutInflater(), PlacesController.getInstance().getPlacesList()));
+        if (Validator.isNullOrEmpty(getBundleSelectedPlace())) {
+            mMap.setInfoWindowAdapter(new MapBalloonAdapter(Contextor.getInstance().getContext(), getActivity().getLayoutInflater(), PlacesController.getInstance().getPlacesList(), null));
+        } else {
+            mMap.setInfoWindowAdapter(new MapBalloonAdapter(Contextor.getInstance().getContext(), getActivity().getLayoutInflater(), PlacesController.getInstance().getPlacesList(), getBundlePlaceId()));
+        }
+
         return false;
     }
 
