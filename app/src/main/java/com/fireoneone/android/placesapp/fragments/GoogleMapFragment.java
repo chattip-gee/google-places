@@ -59,15 +59,7 @@ public class GoogleMapFragment extends BaseFragment<FragmentGoogleMapBinding> im
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
 
-        if (Validator.isNullOrEmpty(getBundleSelectedPlace())) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BANGKOK, 10));
-        } else {
-            double lat = PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLat();
-            double lng = PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLng();
-            LatLng nearby = new LatLng(lat, lng);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(nearby, 20));
-        }
-
+        setupZoomPlace();
         doMarker();
         setupInfoWindowClickListener();
     }
@@ -89,21 +81,40 @@ public class GoogleMapFragment extends BaseFragment<FragmentGoogleMapBinding> im
         });
     }
 
+    private void setupZoomPlace() {
+        if (Validator.isNullOrEmpty(getBundleSelectedPlace())) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BANGKOK, 10));
+        } else {
+            double lat = PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLat();
+            double lng = PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLng();
+            LatLng nearby = new LatLng(lat, lng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(nearby, 20));
+        }
+    }
+
     private void doMarker() {
         if (Validator.isNullOrEmpty(getBundleSelectedPlace())) {
-            for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(placeItem.getLat(), placeItem.getLng()))
-                        .title(placeItem.getName())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
-            }
+            markerPlaces();
         } else {
+            markerSelectedPlaces();
+        }
+    }
+
+    private void markerPlaces() {
+        for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
             mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLat(),
-                            PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLng()))
-                    .title(PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getName())
+                    .position(new LatLng(placeItem.getLat(), placeItem.getLng()))
+                    .title(placeItem.getName())
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
         }
+    }
+
+    private void markerSelectedPlaces() {
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLat(),
+                        PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getLng()))
+                .title(PlacesController.getInstance().getPlacesList().get(getBundlePlaceId()).getName())
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pin)));
     }
 
     @Override
