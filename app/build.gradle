@@ -59,4 +59,7 @@ dependencies {
 
     //Google Places
     implementation 'com.google.android.gms:play-services-places:11.8.0'
+
+    //Google Map
+    compile 'com.google.android.gms:play-services-maps:11.8.0'
 }

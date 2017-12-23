@@ -36,8 +36,18 @@
             android:theme="@style/App.Activity"
             android:windowSoftInputMode="adjustPan" />
 
+        <activity
+            android:name=".activities.GoogleMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/App.Activity"
+            android:windowSoftInputMode="adjustPan" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDRJyV_p--0RWwrII_kvWUJH2ynOiNbzUY" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 </manifest>

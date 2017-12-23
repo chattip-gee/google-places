@@ -31,4 +31,5 @@
 
     <string name="title_menu1">NEARBY</string>
     <string name="title_menu2">FAVORITE</string>
+    <string name="title_select_location">Select Location</string>
 </resources>
