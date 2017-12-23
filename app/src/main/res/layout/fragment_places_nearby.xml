@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/md_white_1000"
+        android:fitsSystemWindows="true">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle_view_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:clipToPadding="false" />
+
+        <com.fireoneone.android.placesapp.custom.LatoRegularTextViewCustom
+            android:id="@+id/text_no_results"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp_11"
+            android:paddingRight="@dimen/dp_11"
+            android:text="@string/global_no_results"
+            android:textColor="@color/standard_app_color"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+</layout>

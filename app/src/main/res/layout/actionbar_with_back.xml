@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_44">
+
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="@dimen/dp_44"
+            android:layout_height="@dimen/dp_44"
+            android:onClick="onActionBarBack"
+            android:padding="@dimen/dp_12"
+            android:src="@drawable/icon_back" />
+
+        <com.fireoneone.android.placesapp.bases.widgets.BaseTextView
+            android:id="@+id/text_actionbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:lines="1"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/sp_16" />
+    </RelativeLayout>
+</LinearLayout>

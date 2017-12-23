@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Places App</string>
+    <!-- Global -->
+    <string name="global_yes">Yes</string>
+    <string name="global_no">No</string>
+    <string name="global_ok">Ok</string>
+    <string name="global_next">Next</string>
+    <string name="global_cancel">Cancel</string>
+    <string name="global_close">Close</string>
+    <string name="global_loading">Loading</string>
+    <string name="global_save">Save</string>
+    <string name="global_confirm">Confirm</string>
+    <string name="global_apply">Apply</string>
+    <string name="global_submit">Submit</string>
+    <string name="global_done">Done</string>
+    <string name="global_clear">Clear</string>
+    <string name="global_dismiss">Dismiss</string>
+    <string name="global_no_results">No Results</string>
+
+    <!-- No Internet Connection -->
+    <string name="dialog_no_internet_connection_title">No Internet Connection</string>
+    <string name="dialog_no_internet_connection_description">The internet connection appears to be offline, please verify your internet connection.</string>
+
+    <!-- Not Found -->
+    <string name="error_not_found">Not Found</string>
+    <string name="error_not_found_next_page">Not Found next page.</string>
+
+    <!-- Error Dialog -->
+    <string name="dialog_error_title">Unfortunately</string>
+    <string name="dialog_error_description">The network was unreachable, please make sure that you have an active data connection</string>
+
+    <string name="title_menu1">NEARBY</string>
+    <string name="title_menu2">FAVORITE</string>
+</resources>

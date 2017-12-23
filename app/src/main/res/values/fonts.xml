@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="light_font" translatable="false">Lato-Light.otf</string>
+    <string name="regular_font" translatable="false">Lato-Regular.otf</string>
+    <string name="bold_font" translatable="false">Lato-Bold.otf</string>
+
+    <string name="default_font_text_view" translatable="false">@string/regular_font</string>
+    <string name="default_font_edit_text" translatable="false">@string/regular_font</string>
+    <string name="default_font_button" translatable="false">@string/bold_font</string>
+
+    <integer name="font_size_percent_text_view">100</integer>
+    <integer name="font_size_percent_edit_text">100</integer>
+    <integer name="font_size_percent_button">100</integer>
+</resources>
