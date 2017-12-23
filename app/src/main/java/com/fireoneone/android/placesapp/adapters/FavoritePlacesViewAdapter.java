@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 
 import com.fireoneone.android.placesapp.R;
 import com.fireoneone.android.placesapp.controller.FavoritesController;
@@ -24,14 +25,14 @@ import java.util.List;
  * Created by chattipsoontaku on 9/29/2017 AD.
  */
 
-public class PlacesViewAdapter extends RecyclerView.Adapter<PlacesViewAdapter.PlacesViewHolder> {
+public class FavoritePlacesViewAdapter extends RecyclerView.Adapter<FavoritePlacesViewAdapter.PlacesViewHolder> {
     Context context;
     private List<PlaceItem> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     SharedPreference sharedPreference;
 
-    public PlacesViewAdapter(Context context, List<PlaceItem> data) {
+    public FavoritePlacesViewAdapter(Context context, List<PlaceItem> data) {
         sharedPreference = new SharedPreference(context);
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
@@ -58,7 +59,12 @@ public class PlacesViewAdapter extends RecyclerView.Adapter<PlacesViewAdapter.Pl
         holder.textURl.setText(placeItem.getUrl());
 
         if (FavoritesController.getInstance().getFavByObject(placeItem).isFavorite()) {
+            holder.containerDetail.setVisibility(View.VISIBLE);
             holder.checkFav.setChecked(true);
+        }
+
+        if (!FavoritesController.getInstance().getFavByObject(placeItem).isFavorite()) {
+            holder.containerDetail.setVisibility(View.GONE);
         }
     }
 
@@ -100,6 +106,7 @@ public class PlacesViewAdapter extends RecyclerView.Adapter<PlacesViewAdapter.Pl
     }
 
     public class PlacesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private RelativeLayout containerDetail;
         private LatoBoldTextViewCustom textName;
         private LatoRegularTextViewCustom textAddress;
         private LatoRegularTextViewCustom textURl;
@@ -108,6 +115,7 @@ public class PlacesViewAdapter extends RecyclerView.Adapter<PlacesViewAdapter.Pl
         PlacesViewHolder(View itemView) {
             super(itemView);
 
+            containerDetail = (RelativeLayout) itemView.findViewById(R.id.container_detail);
             textName = (LatoBoldTextViewCustom) itemView.findViewById(R.id.text_name);
             textAddress = (LatoRegularTextViewCustom) itemView.findViewById(R.id.text_address);
             textURl = (LatoRegularTextViewCustom) itemView.findViewById(R.id.text_url);

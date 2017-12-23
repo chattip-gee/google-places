@@ -42,6 +42,12 @@
             android:theme="@style/App.Activity"
             android:windowSoftInputMode="adjustPan" />
 
+        <activity
+            android:name=".activities.FavoriteActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/App.Activity"
+            android:windowSoftInputMode="adjustPan" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDRJyV_p--0RWwrII_kvWUJH2ynOiNbzUY" />

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.fireoneone.android.placesapp.R;
+import com.fireoneone.android.placesapp.fragments.FavoriteFragment;
 import com.fireoneone.android.placesapp.fragments.PlacesNearByFragment;
 import com.fireoneone.android.placesapp.managers.Contextor;
 
@@ -24,7 +25,7 @@ public class NavigationAdapter extends FragmentPagerAdapter {
             case 0:
                 return new PlacesNearByFragment();
             case 1:
-                return new PlacesNearByFragment();
+                return new FavoriteFragment();
         }
         return null;
     }
