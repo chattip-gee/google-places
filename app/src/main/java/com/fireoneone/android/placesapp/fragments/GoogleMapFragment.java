@@ -58,6 +58,16 @@ public class GoogleMapFragment extends BaseFragment<FragmentGoogleMapBinding> im
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BANGKOK, 10));
         mMap.setOnMarkerClickListener(this);
         doMarker();
+        setupInfoWindowClickListener();
+    }
+
+    private void setupInfoWindowClickListener() {
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     private void doMarker() {
