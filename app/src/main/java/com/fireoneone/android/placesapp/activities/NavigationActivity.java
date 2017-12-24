@@ -119,7 +119,6 @@ public class NavigationActivity extends BaseActivity {
                 hideLoadingDialog();
                 addPlacesNearBy(likelyPlaces);
                 likelyPlaces.release();
-                replaceFragment(R.id.fragment_container, new NavigationFragment());
             }
         });
     }
@@ -161,6 +160,8 @@ public class NavigationActivity extends BaseActivity {
                     placeLikelihood.getPlace().getLatLng().latitude,
                     placeLikelihood.getPlace().getLatLng().longitude);
         }
+
+        replaceFragment(R.id.fragment_container, new NavigationFragment());
     }
 
     @Override
@@ -180,9 +181,11 @@ public class NavigationActivity extends BaseActivity {
                             hideLoadingDialog();
                             addPlacesNearBy(likelyPlaces);
                             likelyPlaces.release();
-                            replaceFragment(R.id.fragment_container, new NavigationFragment());
                         }
                     });
+                } else {
+                    hideLoadingDialog();
+                    replaceFragment(R.id.fragment_container, new NavigationFragment());
                 }
             }
         }

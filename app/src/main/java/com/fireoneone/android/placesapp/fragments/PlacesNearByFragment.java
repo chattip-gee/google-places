@@ -134,7 +134,7 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
                                         placeDetailsBaseModel.getResult().getGeometry().getLocation().getLng());
 
                                 for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
-                                    FavoriteItemRealmManager.getInstance().addFavoriteItem(placeItem.getId(),
+                                    FavoriteItemRealmManager.getInstance().addFavoriteItem(
                                             placeItem.getPlaceId(),
                                             placeItem.getLat(),
                                             placeItem.getLng(),

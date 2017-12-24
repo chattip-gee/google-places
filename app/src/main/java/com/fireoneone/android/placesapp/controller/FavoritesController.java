@@ -24,7 +24,7 @@ public class FavoritesController {
 
             for (int i = 0; i < favoriteItems.size(); i++) {
                 FavoriteItem favoriteItem = new FavoriteItem();
-                favoriteItem.setId(i);
+                favoriteItem.setPlaceId(favoriteItems.get(i).getPlaceId());
                 favoriteItem.setLat(favoriteItems.get(i).getLat());
                 favoriteItem.setLng(favoriteItems.get(i).getLng());
                 favoriteItem.setFavorite(favoriteItems.get(i).isFavorite());

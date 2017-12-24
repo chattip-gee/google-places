@@ -134,7 +134,7 @@ public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> 
                                         placeDetailsBaseModel.getResult().getGeometry().getLocation().getLng());
 
                                 for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
-                                    FavoriteItemRealmManager.getInstance().addFavoriteItem(placeItem.getId(),
+                                    FavoriteItemRealmManager.getInstance().addFavoriteItem(
                                             placeItem.getPlaceId(),
                                             placeItem.getLat(),
                                             placeItem.getLng(),

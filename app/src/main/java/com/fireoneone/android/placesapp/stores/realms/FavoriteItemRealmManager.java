@@ -52,11 +52,10 @@ public class FavoriteItemRealmManager {
         return favoriteItem;
     }
 
-    public void addFavoriteItem(Integer id, String placeId, double lat, double lng, boolean isFav) {
+    public void addFavoriteItem(String placeId, double lat, double lng, boolean isFav) {
         FavoriteItem favoriteItem = new FavoriteItem();
 
         realm.beginTransaction();
-        favoriteItem.setId(id);
         favoriteItem.setPlaceId(placeId);
         favoriteItem.setLat(lat);
         favoriteItem.setLng(lng);
