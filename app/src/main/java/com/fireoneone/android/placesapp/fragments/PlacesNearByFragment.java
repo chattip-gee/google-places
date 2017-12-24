@@ -16,11 +16,9 @@ import com.fireoneone.android.placesapp.interfaces.CallbackPlaceDetails;
 import com.fireoneone.android.placesapp.interfaces.CallbackPlaceSearch;
 import com.fireoneone.android.placesapp.managers.Contextor;
 import com.fireoneone.android.placesapp.managers.LocationManager;
-import com.fireoneone.android.placesapp.model.PlaceItem;
 import com.fireoneone.android.placesapp.model.google_service.PlaceDetailsBaseModel;
 import com.fireoneone.android.placesapp.model.google_service.PlaceSearchBaseModel;
 import com.fireoneone.android.placesapp.model.google_service.place_search.Result;
-import com.fireoneone.android.placesapp.stores.realms.FavoriteItemRealmManager;
 import com.fireoneone.android.placesapp.stores.realms.PlaceItemRealmManager;
 import com.fireoneone.android.placesapp.utils.Constant;
 import com.fireoneone.android.placesapp.utils.Validator;
@@ -124,6 +122,7 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
                                 hideLoadingDialog();
                                 binding.refreshPage.setRefreshing(false);
 
+                                PlaceItemRealmManager.getInstance().clearAll();
                                 PlaceItemRealmManager.getInstance().addPlaceItem(
                                         placeDetailsBaseModel.getResult().getName(),
                                         resultItem.getPlaceId(),
@@ -131,15 +130,6 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
                                         placeDetailsBaseModel.getResult().getWebsite(),
                                         placeDetailsBaseModel.getResult().getGeometry().getLocation().getLat(),
                                         placeDetailsBaseModel.getResult().getGeometry().getLocation().getLng());
-
-                                for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
-                                    FavoriteItemRealmManager.getInstance().addFavoriteItem(
-                                            placeItem.getPlaceId(),
-                                            placeItem.getLat(),
-                                            placeItem.getLng(),
-                                            FavoriteItemRealmManager.getInstance().getFavoriteItem(placeItem).isFavorite());
-                                }
-
                                 placesViewAdapter.notifyDataSetChanged();
                             }
                         });
