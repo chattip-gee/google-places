@@ -7,12 +7,19 @@
         android:background="@color/md_white_1000"
         android:fitsSystemWindows="true">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycle_view_list"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_page"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:clipToPadding="false" />
+            android:layout_height="match_parent"
+            android:background="@color/transparent_background1">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycle_view_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:clipToPadding="false" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <com.fireoneone.android.placesapp.custom.LatoRegularTextViewCustom
             android:id="@+id/text_no_results"

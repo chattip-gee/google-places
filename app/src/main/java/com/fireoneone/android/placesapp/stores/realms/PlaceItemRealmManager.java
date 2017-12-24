@@ -54,4 +54,23 @@ public class PlaceItemRealmManager {
 
         index++;
     }
+//
+//    public void updatePlaceItem(PlaceItem newPlaceItem) {
+//        PlaceItem placeItem = realm.where(PlaceItem.class)
+//                .equalTo("id", newPlaceItem.getId())
+//                .findFirst();
+//
+//        if (placeItem == null) {
+//            placeItem = new PlaceItem();
+//        }
+//
+//        realm.beginTransaction();
+//        placeItem.setName(newPlaceItem.getName());
+//        placeItem.setAddress(newPlaceItem.getAddress());
+//        placeItem.setUrl(newPlaceItem.getUrl());
+//        placeItem.setLat(newPlaceItem.getLat());
+//        placeItem.setLng(newPlaceItem.getLng());
+//        realm.insertOrUpdate(placeItem);
+//        realm.commitTransaction();
+//    }
 }
