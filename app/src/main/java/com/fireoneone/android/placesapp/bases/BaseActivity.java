@@ -1,10 +1,13 @@
 package com.fireoneone.android.placesapp.bases;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -17,10 +20,20 @@ import android.view.WindowManager;
 
 import com.fireoneone.android.placesapp.R;
 import com.fireoneone.android.placesapp.bases.widgets.BaseTextView;
+import com.fireoneone.android.placesapp.dialogs.InfoDialog;
+import com.fireoneone.android.placesapp.dialogs.LoadingDialog;
+
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+
+import rx.Subscription;
 
 public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 
     protected T binding;
+    protected Subscription subscription;
+    protected LoadingDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +51,10 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
 
     @Override
     protected void onStop() {
+        if (subscription != null) {
+            subscription.unsubscribe();
+            subscription = null;
+        }
         super.onStop();
     }
 
@@ -205,5 +222,97 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
 
     public void onActionBarBack(View v) {
         onBackPressed();
+    }
+
+    //********************************* CHECK NETWORK ******************************************************************************************************************
+
+    public boolean isConnect() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //********************************* LOADING **********************************************************************************************************************
+
+    public void displayLoadingDialog() {
+        displayLoadingDialog(getResources().getString(R.string.global_loading));
+    }
+
+    public void displayLoadingDialog(String s) {
+        hideLoadingDialog();
+
+        mProgressDialog = new LoadingDialog(this);
+        mProgressDialog.show();
+    }
+
+    public void hideLoadingDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    //********************************* SHOW DIALOG *******************************************************************************************************************
+
+    public void showInfo(String title, String description) {
+        InfoDialog infoDialog = InfoDialog.newInstance(title, description);
+        infoDialog.setInfoDialogListener(null);
+        infoDialog.setCloseButtonRes(R.string.global_close);
+        infoDialog.show(getSupportFragmentManager(), null);
+    }
+
+
+    public void showNoInternetConnectionError() {
+        InfoDialog infoDialog = InfoDialog.newInstance(
+                R.string.dialog_no_internet_connection_title,
+                R.string.dialog_error_description
+        );
+
+        infoDialog.setInfoDialogListener(null
+        );
+        infoDialog.setCloseButtonRes(R.string.global_close);
+        infoDialog.show(getSupportFragmentManager(), null);
+    }
+
+    public void showNoInternetConnectionError(Throwable e) {
+        showNoInternetConnectionError(e, null);
+    }
+
+    public void showNoInternetConnectionError(Throwable e, InfoDialog.InfoDialogListener listener) {
+        InfoDialog infoDialog = InfoDialog.newInstance(
+                R.string.dialog_no_internet_connection_title,
+                R.string.dialog_error_description
+        );
+
+        infoDialog.setInfoDialogListener(listener);
+        infoDialog.setCloseButtonRes(R.string.global_close);
+        infoDialog.show(getSupportFragmentManager(), null);
+    }
+
+    public void showError(Throwable e) {
+        showError(e, null);
+    }
+
+    public void showError(Throwable e, InfoDialog.InfoDialogListener listener) {
+        InfoDialog infoDialog;
+        if ((e instanceof SocketTimeoutException || e instanceof UnknownHostException || e instanceof IOException)) {
+            infoDialog = InfoDialog.newInstance(
+                    R.string.dialog_no_internet_connection_title,
+                    R.string.dialog_no_internet_connection_description
+            );
+        } else {
+            infoDialog = InfoDialog.newInstance(
+                    R.string.dialog_error_title,
+                    e.getLocalizedMessage()
+            );
+        }
+
+        infoDialog.setInfoDialogListener(listener);
+        infoDialog.setCloseButtonRes(R.string.global_close);
+        infoDialog.show(getSupportFragmentManager(), null);
     }
 }

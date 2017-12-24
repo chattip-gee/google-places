@@ -12,9 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fireoneone.android.placesapp.R;
+import com.fireoneone.android.placesapp.dialogs.InfoDialog;
+import com.fireoneone.android.placesapp.dialogs.LoadMoreDialog;
+import com.fireoneone.android.placesapp.dialogs.LoadingDialog;
+
+import rx.Subscription;
+
 public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
 
     protected T binding;
+    protected Subscription subscription;
+    protected LoadingDialog mProgressDialog;
+    protected LoadMoreDialog mProgressLoadMoreDialog;
 
     @Nullable
     @Override
@@ -46,6 +56,10 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
 
     @Override
     public void onStop() {
+        if (subscription != null) {
+            subscription.unsubscribe();
+            subscription = null;
+        }
         super.onStop();
     }
 
@@ -177,5 +191,64 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
 
     protected BaseActivity getBaseActivity() {
         return (BaseActivity) getActivity();
+    }
+
+    //********************************* SHOW DIALOG *******************************************************************************************************************
+
+    public void showNoInternetConnectionError() {
+        InfoDialog infoDialog = InfoDialog.newInstance(
+                R.string.dialog_no_internet_connection_title,
+                R.string.dialog_error_description
+        );
+
+        infoDialog.setInfoDialogListener(null
+        );
+        infoDialog.setCloseButtonRes(R.string.global_close);
+        infoDialog.show(getChildFragmentManager(), null);
+    }
+
+    public void showError(Throwable e) {
+        InfoDialog infoDialog = InfoDialog.newInstance(
+                R.string.dialog_no_internet_connection_title,
+                R.string.dialog_error_description
+        );
+        infoDialog.setCloseButtonRes(R.string.global_close);
+        infoDialog.show(getChildFragmentManager(), null);
+    }
+
+    //********************************* LOADING **********************************************************************************************************************
+
+    public void displayLoadingDialog() {
+        displayLoadingDialog("Loading");
+    }
+
+    public void displayLoadingDialog(String s) {
+        hideLoadingDialog();
+
+        mProgressDialog = new LoadingDialog(getContext());
+        mProgressDialog.show();
+    }
+
+    public void hideLoadingDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    public void displayLoadMoreDialog() {
+        displayLoadMoreDialog(getResources().getString(R.string.global_loading));
+    }
+
+    public void displayLoadMoreDialog(String s) {
+        hideLoadMoreDialog();
+
+        mProgressLoadMoreDialog = new LoadMoreDialog(getContext());
+        mProgressLoadMoreDialog.show();
+    }
+
+    public void hideLoadMoreDialog() {
+        if (mProgressLoadMoreDialog != null) {
+            mProgressLoadMoreDialog.dismiss();
+        }
     }
 }
