@@ -8,20 +8,11 @@ import android.view.View;
 import com.fireoneone.android.placesapp.R;
 import com.fireoneone.android.placesapp.activities.GoogleMapActivity;
 import com.fireoneone.android.placesapp.adapters.FavoritePlacesViewAdapter;
-import com.fireoneone.android.placesapp.apis.ApiManager;
 import com.fireoneone.android.placesapp.bases.BaseFragment;
 import com.fireoneone.android.placesapp.controller.PlacesController;
 import com.fireoneone.android.placesapp.databinding.FragmentPlacesNearbyBinding;
-import com.fireoneone.android.placesapp.interfaces.CallbackPlaceDetails;
-import com.fireoneone.android.placesapp.interfaces.CallbackPlaceSearch;
+import com.fireoneone.android.placesapp.interfaces.BaseCallback;
 import com.fireoneone.android.placesapp.managers.Contextor;
-import com.fireoneone.android.placesapp.managers.LocationManager;
-import com.fireoneone.android.placesapp.model.PlaceItem;
-import com.fireoneone.android.placesapp.model.google_service.PlaceDetailsBaseModel;
-import com.fireoneone.android.placesapp.model.google_service.PlaceSearchBaseModel;
-import com.fireoneone.android.placesapp.model.google_service.place_search.Result;
-import com.fireoneone.android.placesapp.stores.realms.FavoriteItemRealmManager;
-import com.fireoneone.android.placesapp.stores.realms.PlaceItemRealmManager;
 import com.fireoneone.android.placesapp.utils.Constant;
 import com.fireoneone.android.placesapp.utils.Validator;
 
@@ -65,8 +56,17 @@ public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> 
     }
 
     private void initEvent() {
-        displayLoadingDialog();
-        refreshData();
+        refreshData(new BaseCallback() {
+            @Override
+            public void onApiError(String errorMessage) {
+
+            }
+
+            @Override
+            public void onApiSuccess(String success) {
+
+            }
+        });
         setupClickListener();
         setupRefreshPageListener();
     }
@@ -90,67 +90,25 @@ public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> 
             @Override
             public void onRefresh() {
                 binding.refreshPage.setRefreshing(true);
-                refreshData();
+                refreshData(new BaseCallback() {
+                    @Override
+                    public void onApiError(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onApiSuccess(String success) {
+                        binding.refreshPage.setRefreshing(false);
+                    }
+                });
             }
         });
     }
 
-    private void refreshData() {
+    private void refreshData(BaseCallback baseCallback) {
         favoritePlacesViewAdapter.clearAllData();
         favoritePlacesViewAdapter.notifyDataSetChanged();
-        getPlacesNearBy();
-    }
 
-    private void getPlacesNearBy() {
-        new ApiManager().getPlaces(LocationManager.getInstance().getmLocation(), 100, new CallbackPlaceSearch() {
-            @Override
-            public void onApiError(String errorMessage) {
-                hideLoadingDialog();
-                binding.refreshPage.setRefreshing(false);
-            }
-
-            @Override
-            public void onApiSuccess(PlaceSearchBaseModel placeSearchBaseModel) {
-                if (!Validator.isNullOrEmpty(placeSearchBaseModel.getResults().size())) {
-                    for (final Result resultItem : placeSearchBaseModel.getResults()) {
-                        new ApiManager().getPlaceDetails(resultItem.getPlaceId(), new CallbackPlaceDetails() {
-                            @Override
-                            public void onApiError(String errorMessage) {
-                                hideLoadingDialog();
-                                binding.refreshPage.setRefreshing(false);
-                            }
-
-                            @Override
-                            public void onApiSuccess(PlaceDetailsBaseModel placeDetailsBaseModel) {
-                                hideLoadingDialog();
-                                binding.refreshPage.setRefreshing(false);
-
-                                PlaceItemRealmManager.getInstance().addPlaceItem(
-                                        placeDetailsBaseModel.getResult().getName(),
-                                        resultItem.getPlaceId(),
-                                        placeDetailsBaseModel.getResult().getVicinity(),
-                                        placeDetailsBaseModel.getResult().getWebsite(),
-                                        placeDetailsBaseModel.getResult().getGeometry().getLocation().getLat(),
-                                        placeDetailsBaseModel.getResult().getGeometry().getLocation().getLng());
-
-                                for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
-                                    FavoriteItemRealmManager.getInstance().addFavoriteItem(
-                                            placeItem.getPlaceId(),
-                                            placeItem.getLat(),
-                                            placeItem.getLng(),
-                                            FavoriteItemRealmManager.getInstance().getFavoriteItem(placeItem).isFavorite());
-                                }
-
-                                favoritePlacesViewAdapter.notifyDataSetChanged();
-                            }
-                        });
-                        favoritePlacesViewAdapter.notifyItemChanged(placeSearchBaseModel.getResults().size());
-                    }
-                } else {
-                    hideLoadingDialog();
-                    binding.refreshPage.setRefreshing(false);
-                }
-            }
-        });
+        baseCallback.onApiSuccess("Success");
     }
 }

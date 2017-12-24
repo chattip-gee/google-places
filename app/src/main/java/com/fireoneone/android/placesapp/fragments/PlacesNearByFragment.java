@@ -65,7 +65,6 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
     }
 
     private void initEvent() {
-        displayLoadingDialog();
         refreshData();
         setupClickListener();
         setupRefreshPageListener();
@@ -91,6 +90,7 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
             public void onRefresh() {
                 binding.refreshPage.setRefreshing(true);
                 refreshData();
+                getPlacesNearBy();
             }
         });
     }
@@ -98,7 +98,6 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
     private void refreshData() {
         placesViewAdapter.clearAllData();
         placesViewAdapter.notifyDataSetChanged();
-        getPlacesNearBy();
     }
 
     private void getPlacesNearBy() {
@@ -144,6 +143,7 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
                                 placesViewAdapter.notifyDataSetChanged();
                             }
                         });
+
                         placesViewAdapter.notifyItemChanged(placeSearchBaseModel.getResults().size());
                     }
                 } else {
