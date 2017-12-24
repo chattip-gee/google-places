@@ -155,6 +155,7 @@ public class NavigationActivity extends BaseActivity {
 
             PlaceItemRealmManager.getInstance().addPlaceItem(
                     placeLikelihood.getPlace().getName().toString(),
+                    placeLikelihood.getPlace().getId(),
                     placeLikelihood.getPlace().getAddress().toString(),
                     strURL,
                     placeLikelihood.getPlace().getLatLng().latitude,

@@ -11,6 +11,7 @@ public class PlaceItem extends RealmObject {
 
     @PrimaryKey
     private Integer id;
+    private String placeId;
     private String name;
     private String address;
     private String url;
@@ -23,6 +24,14 @@ public class PlaceItem extends RealmObject {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 
     public String getName() {

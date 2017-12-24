@@ -69,7 +69,7 @@ public class PlacesViewAdapter extends RecyclerView.Adapter<PlacesViewAdapter.Pl
                     holder.checkFav.setChecked(true);
                 }
 
-                FavoriteItemRealmManager.getInstance().addFavoriteItem(placeItem.getId(),
+                FavoriteItemRealmManager.getInstance().addFavoriteItem(placeItem.getId(), placeItem.getPlaceId(),
                         placeItem.getLat(), placeItem.getLng(), isChecked);
             }
         });

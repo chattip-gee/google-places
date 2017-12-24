@@ -24,6 +24,7 @@ public class PlacesController {
             for (int i = 0; i < placeItems.size(); i++) {
                 PlaceItem placeItem = new PlaceItem();
                 placeItem.setId(i);
+                placeItem.setPlaceId(placeItems.get(i).getPlaceId());
                 placeItem.setName(placeItems.get(i).getName());
                 placeItem.setAddress(placeItems.get(i).getAddress());
                 placeItem.setUrl(placeItems.get(i).getUrl());

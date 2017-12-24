@@ -11,6 +11,7 @@ public class FavoriteItem extends RealmObject {
 
     @PrimaryKey
     private Integer id;
+    private String placeId;
     private double lat;
     private double lng;
     private boolean isFavorite;
@@ -21,6 +22,14 @@ public class FavoriteItem extends RealmObject {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 
     public double getLat() {

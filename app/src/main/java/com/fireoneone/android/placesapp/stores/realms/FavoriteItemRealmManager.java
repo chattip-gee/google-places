@@ -41,7 +41,7 @@ public class FavoriteItemRealmManager {
 
     public FavoriteItem getFavoriteItem(PlaceItem placeItem) {
         FavoriteItem favoriteItem = realm.where(FavoriteItem.class)
-                .equalTo("id", placeItem.getId())
+                .equalTo("placeId", placeItem.getPlaceId())
                 .equalTo("lat", placeItem.getLat())
                 .equalTo("lng", placeItem.getLng())
                 .findFirst();
@@ -52,11 +52,12 @@ public class FavoriteItemRealmManager {
         return favoriteItem;
     }
 
-    public void addFavoriteItem(Integer id, double lat, double lng, boolean isFav) {
+    public void addFavoriteItem(Integer id, String placeId, double lat, double lng, boolean isFav) {
         FavoriteItem favoriteItem = new FavoriteItem();
 
         realm.beginTransaction();
         favoriteItem.setId(id);
+        favoriteItem.setPlaceId(placeId);
         favoriteItem.setLat(lat);
         favoriteItem.setLng(lng);
         favoriteItem.setFavorite(isFav);

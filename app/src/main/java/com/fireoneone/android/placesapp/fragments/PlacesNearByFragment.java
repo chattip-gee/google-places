@@ -112,7 +112,7 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
             @Override
             public void onApiSuccess(PlaceSearchBaseModel placeSearchBaseModel) {
                 if (!Validator.isNullOrEmpty(placeSearchBaseModel.getResults().size())) {
-                    for (Result resultItem : placeSearchBaseModel.getResults()) {
+                    for (final Result resultItem : placeSearchBaseModel.getResults()) {
                         new ApiManager().getPlaceDetails(resultItem.getPlaceId(), new CallbackPlaceDetails() {
                             @Override
                             public void onApiError(String errorMessage) {
@@ -127,6 +127,7 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
 
                                 PlaceItemRealmManager.getInstance().addPlaceItem(
                                         placeDetailsBaseModel.getResult().getName(),
+                                        resultItem.getPlaceId(),
                                         placeDetailsBaseModel.getResult().getVicinity(),
                                         placeDetailsBaseModel.getResult().getWebsite(),
                                         placeDetailsBaseModel.getResult().getGeometry().getLocation().getLat(),
@@ -134,7 +135,9 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
 
                                 for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
                                     FavoriteItemRealmManager.getInstance().addFavoriteItem(placeItem.getId(),
-                                            placeItem.getLat(), placeItem.getLng(),
+                                            placeItem.getPlaceId(),
+                                            placeItem.getLat(),
+                                            placeItem.getLng(),
                                             FavoriteItemRealmManager.getInstance().getFavoriteItem(placeItem).isFavorite());
                                 }
 

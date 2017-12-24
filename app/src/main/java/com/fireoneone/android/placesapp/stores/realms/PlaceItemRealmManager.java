@@ -39,11 +39,12 @@ public class PlaceItemRealmManager {
         return realm.where(PlaceItem.class).findAll();
     }
 
-    public void addPlaceItem(String name, String address, String url, double lat, double lng) {
+    public void addPlaceItem(String name, String placeId, String address, String url, double lat, double lng) {
         PlaceItem placeItem = new PlaceItem();
 
         realm.beginTransaction();
         placeItem.setId(index);
+        placeItem.setPlaceId(placeId);
         placeItem.setName(name);
         placeItem.setAddress(address);
         placeItem.setUrl(url);
@@ -54,23 +55,4 @@ public class PlaceItemRealmManager {
 
         index++;
     }
-//
-//    public void updatePlaceItem(PlaceItem newPlaceItem) {
-//        PlaceItem placeItem = realm.where(PlaceItem.class)
-//                .equalTo("id", newPlaceItem.getId())
-//                .findFirst();
-//
-//        if (placeItem == null) {
-//            placeItem = new PlaceItem();
-//        }
-//
-//        realm.beginTransaction();
-//        placeItem.setName(newPlaceItem.getName());
-//        placeItem.setAddress(newPlaceItem.getAddress());
-//        placeItem.setUrl(newPlaceItem.getUrl());
-//        placeItem.setLat(newPlaceItem.getLat());
-//        placeItem.setLng(newPlaceItem.getLng());
-//        realm.insertOrUpdate(placeItem);
-//        realm.commitTransaction();
-//    }
 }
