@@ -18,6 +18,7 @@ import com.fireoneone.android.placesapp.fragments.NavigationFragment;
 import com.fireoneone.android.placesapp.helpers.types.StatusCodeType;
 import com.fireoneone.android.placesapp.interfaces.CallbackPlaces;
 import com.fireoneone.android.placesapp.managers.FusedLocationSingletonManager;
+import com.fireoneone.android.placesapp.managers.LocationManager;
 import com.fireoneone.android.placesapp.stores.realms.PlaceItemRealmManager;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
@@ -55,6 +56,7 @@ public class NavigationActivity extends BaseActivity {
             mLatitude = mCurrentLocation.getLatitude();
             mLongitude = mCurrentLocation.getLongitude();
             String fmLocation = String.format("%s,%s", mLatitude, mLongitude);
+            LocationManager.getInstance().setmLocation(fmLocation);
         }
     }
 
