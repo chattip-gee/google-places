@@ -1,16 +1,23 @@
 package com.fireoneone.android.placesapp.activities;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.fireoneone.android.placesapp.R;
 import com.fireoneone.android.placesapp.bases.BaseActivity;
 import com.fireoneone.android.placesapp.fragments.NavigationFragment;
 import com.fireoneone.android.placesapp.helpers.types.StatusCodeType;
 import com.fireoneone.android.placesapp.interfaces.CallbackPlaces;
+import com.fireoneone.android.placesapp.managers.FusedLocationSingletonManager;
 import com.fireoneone.android.placesapp.stores.realms.PlaceItemRealmManager;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
@@ -20,9 +27,36 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import static com.fireoneone.android.placesapp.utils.Constant.INTENT_FILTER_LOCATION_UPDATE;
+import static com.fireoneone.android.placesapp.utils.Constant.LBM_EVENT_LOCATION_UPDATE;
+
 public class NavigationActivity extends BaseActivity {
+    protected Location mCurrentLocation;
+    protected double mLatitude = 0;
+    protected double mLongitude = 0;
     private GeoDataClient mGeoDataClient;
     private PlaceDetectionClient mPlaceDetectionClient;
+
+    private BroadcastReceiver mLocationUpdated = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                Location location = (Location) intent.getParcelableExtra(LBM_EVENT_LOCATION_UPDATE);
+                mCurrentLocation = location;
+                updateLocation();
+            } catch (Exception e) {
+
+            }
+        }
+    };
+
+    private void updateLocation() {
+        if (mCurrentLocation != null) {
+            mLatitude = mCurrentLocation.getLatitude();
+            mLongitude = mCurrentLocation.getLongitude();
+            String fmLocation = String.format("%s,%s", mLatitude, mLongitude);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,33 +83,39 @@ public class NavigationActivity extends BaseActivity {
         findPlacesNearBy(new CallbackPlaces() {
             @Override
             public void onApiError(String errorMessage) {
-
+                hideLoadingDialog();
             }
 
             @Override
             public void onApiSuccess(PlaceLikelihoodBufferResponse likelyPlaces) {
+                hideLoadingDialog();
+                addPlacesNearBy(likelyPlaces);
+                likelyPlaces.release();
                 replaceFragment(R.id.fragment_container, new NavigationFragment());
             }
         });
     }
 
     private void findPlacesNearBy(final CallbackPlaces callbackPlaces) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, StatusCodeType.OK);
-            return;
-        }
-
-        Task<PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(null);
-        placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
-                PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
-                addPlacesNearBy(likelyPlaces);
-                likelyPlaces.release();
-                callbackPlaces.onApiSuccess(likelyPlaces);
-
+        if (isConnect()) {
+            displayLoadingDialog();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, StatusCodeType.OK);
+                return;
             }
-        });
+
+            Task<PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(null);
+            placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
+                @Override
+                public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
+                    PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
+                    callbackPlaces.onApiSuccess(likelyPlaces);
+
+                }
+            });
+        } else {
+            replaceFragment(R.id.fragment_container, new NavigationFragment());
+        }
     }
 
     private void addPlacesNearBy(PlaceLikelihoodBufferResponse likelyPlaces) {
@@ -103,16 +143,33 @@ public class NavigationActivity extends BaseActivity {
                     findPlacesNearBy(new CallbackPlaces() {
                         @Override
                         public void onApiError(String errorMessage) {
-
+                            hideLoadingDialog();
                         }
 
                         @Override
                         public void onApiSuccess(PlaceLikelihoodBufferResponse likelyPlaces) {
+                            hideLoadingDialog();
+                            addPlacesNearBy(likelyPlaces);
+                            likelyPlaces.release();
                             replaceFragment(R.id.fragment_container, new NavigationFragment());
                         }
                     });
                 }
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FusedLocationSingletonManager.getInstance().startLocationUpdates();
+        LocalBroadcastManager.getInstance(NavigationActivity.this).registerReceiver(mLocationUpdated, new IntentFilter(INTENT_FILTER_LOCATION_UPDATE));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FusedLocationSingletonManager.getInstance().startLocationUpdates();
+        LocalBroadcastManager.getInstance(NavigationActivity.this).registerReceiver(mLocationUpdated, new IntentFilter(INTENT_FILTER_LOCATION_UPDATE));
     }
 }

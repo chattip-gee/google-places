@@ -2,7 +2,7 @@ package com.fireoneone.android.placesapp;
 
 import com.fireoneone.android.placesapp.activities.GoogleMapActivity;
 import com.fireoneone.android.placesapp.apis.ApiConstant;
-import com.fireoneone.android.placesapp.helpers.types.GoogleMapType;
+import com.fireoneone.android.placesapp.helpers.types.FireOneOneType;
 
 /**
  * Created by Sloth on 12/23/2017.
@@ -30,15 +30,15 @@ public class FireOneOneSDK {
         return instance;
     }
 
-    public static void init(@GoogleMapType.Type String type) {
+    public static void init(@FireOneOneType.Type String type) {
         switch (type) {
-            case GoogleMapType.DEV:
+            case FireOneOneType.DEV:
                 ApiConstant.init(DEV_BASE_URL);
                 break;
-            case GoogleMapType.STAGING:
+            case FireOneOneType.STAGING:
                 ApiConstant.init(STAGING_BASE_URL);
                 break;
-            case GoogleMapType.PROD:
+            case FireOneOneType.PROD:
                 ApiConstant.init(PRODUCTION_BASE_URL);
                 break;
         }

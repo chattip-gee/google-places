@@ -1,5 +1,7 @@
 package com.fireoneone.android.placesapp.apis;
 
+import com.fireoneone.android.placesapp.model.google_service.PlaceDetailsBaseModel;
+import com.fireoneone.android.placesapp.model.google_service.PlaceSearchBaseModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
 
 /**
  * Created by Chattip Soontaku.
@@ -30,6 +33,18 @@ public class ConnectionManager {
     private String token = "bearer ";
     private String mBody;
     private MultipartBody.Part multiPartBody;
+
+    public Observable<PlaceSearchBaseModel> initGetPlaces() {
+        Observable<PlaceSearchBaseModel> observable = onConnect().getPlaces(mMapStr, mMapInt);
+
+        return observable;
+    }
+
+    public Observable<PlaceDetailsBaseModel> initGetPlaceDetails() {
+        Observable<PlaceDetailsBaseModel> observable = onConnect().getPlaceDetails(mMapStr);
+
+        return observable;
+    }
 
     public ConnectionManager(Builder builder) {
         super();

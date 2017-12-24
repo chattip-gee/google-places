@@ -3,7 +3,7 @@ package com.fireoneone.android.placesapp;
 import android.app.Application;
 
 import com.fireoneone.android.placesapp.helpers.TranslationHelper;
-import com.fireoneone.android.placesapp.helpers.types.GoogleMapType;
+import com.fireoneone.android.placesapp.helpers.types.FireOneOneType;
 import com.fireoneone.android.placesapp.managers.Contextor;
 
 import io.realm.Realm;
@@ -26,7 +26,7 @@ public class SettingApplication extends Application {
         super.onCreate();
         instance = this;
         Contextor.getInstance().init(getApplicationContext());
-        FireOneOneSDK.init(GoogleMapType.PROD);
+        FireOneOneSDK.init(FireOneOneType.PROD);
         TranslationHelper.getInstance().initLanguage(this);
         Realm.init(getApplicationContext());
         RealmConfiguration config = new RealmConfiguration
