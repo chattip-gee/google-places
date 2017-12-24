@@ -77,6 +77,10 @@ public class FavoritePlacesViewAdapter extends RecyclerView.Adapter<FavoritePlac
     }
 
     public void clearAllData() {
+        if (mData == null) {
+            return;
+        }
+
         PlaceItemRealmManager.getInstance().clearAll();
     }
 

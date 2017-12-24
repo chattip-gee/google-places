@@ -12,6 +12,7 @@ import com.fireoneone.android.placesapp.controller.PlacesController;
 import com.fireoneone.android.placesapp.databinding.FragmentPlacesNearbyBinding;
 import com.fireoneone.android.placesapp.managers.Contextor;
 import com.fireoneone.android.placesapp.utils.Constant;
+import com.fireoneone.android.placesapp.utils.Validator;
 
 public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBinding> {
     private int numberOfColumns = 1;
@@ -43,6 +44,12 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
     private void setupAdapter() {
         placesViewAdapter = new PlacesViewAdapter(Contextor.getInstance().getContext(), PlacesController.getInstance().getPlacesList());
         binding.recycleViewList.setAdapter(placesViewAdapter);
+
+        if (!Validator.isNullOrEmpty(PlacesController.getInstance().getPlacesList().size())) {
+            binding.textNoResults.setVisibility(View.GONE);
+        } else {
+            binding.textNoResults.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initEvent() {

@@ -89,6 +89,10 @@ public class PlacesViewAdapter extends RecyclerView.Adapter<PlacesViewAdapter.Pl
     }
 
     public void clearAllData() {
+        if (mData == null) {
+            return;
+        }
+
         PlaceItemRealmManager.getInstance().clearAll();
     }
 
