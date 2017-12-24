@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 
 import com.fireoneone.android.placesapp.R;
@@ -14,8 +13,6 @@ import com.fireoneone.android.placesapp.controller.FavoritesController;
 import com.fireoneone.android.placesapp.custom.LatoBoldTextViewCustom;
 import com.fireoneone.android.placesapp.custom.LatoRegularTextViewCustom;
 import com.fireoneone.android.placesapp.model.PlaceItem;
-import com.fireoneone.android.placesapp.stores.SharedPreference;
-import com.fireoneone.android.placesapp.stores.realms.FavoriteItemRealmManager;
 import com.fireoneone.android.placesapp.stores.realms.PlaceItemRealmManager;
 
 import java.util.Collections;
@@ -30,10 +27,8 @@ public class FavoritePlacesViewAdapter extends RecyclerView.Adapter<FavoritePlac
     private List<PlaceItem> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    SharedPreference sharedPreference;
 
     public FavoritePlacesViewAdapter(Context context, List<PlaceItem> data) {
-        sharedPreference = new SharedPreference(context);
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.mData = data;
@@ -50,13 +45,13 @@ public class FavoritePlacesViewAdapter extends RecyclerView.Adapter<FavoritePlac
     public void onBindViewHolder(PlacesViewHolder holder, int position) {
         final PlaceItem placeItem = mData.get(position);
         initWidget(holder, placeItem);
-        setupOnCheckedChangeListener(holder, placeItem);
     }
 
     private void initWidget(PlacesViewHolder holder, PlaceItem placeItem) {
         holder.textName.setText(placeItem.getName());
         holder.textAddress.setText(placeItem.getAddress());
         holder.textURl.setText(placeItem.getUrl());
+        holder.checkFav.setEnabled(false);
 
         if (FavoritesController.getInstance().getFavByObject(placeItem).isFavorite()) {
             holder.containerDetail.setVisibility(View.VISIBLE);
@@ -66,22 +61,6 @@ public class FavoritePlacesViewAdapter extends RecyclerView.Adapter<FavoritePlac
         if (!FavoritesController.getInstance().getFavByObject(placeItem).isFavorite()) {
             holder.containerDetail.setVisibility(View.GONE);
         }
-    }
-
-    private void setupOnCheckedChangeListener(final PlacesViewHolder holder, final PlaceItem placeItem) {
-        holder.checkFav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    holder.checkFav.setChecked(false);
-                } else {
-                    holder.checkFav.setChecked(true);
-                }
-
-                FavoriteItemRealmManager.getInstance().addFavoriteItem(placeItem.getId(),
-                        placeItem.getLat(), placeItem.getLng(), isChecked);
-            }
-        });
     }
 
     @Override

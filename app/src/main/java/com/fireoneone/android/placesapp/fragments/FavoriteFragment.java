@@ -47,6 +47,10 @@ public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> 
 
     private void initEvent() {
         refreshData();
+        setupClickListener();
+    }
+
+    private void setupClickListener() {
         favoritePlacesViewAdapter.setClickListener(new FavoritePlacesViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

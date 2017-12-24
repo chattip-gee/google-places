@@ -47,6 +47,10 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
 
     private void initEvent() {
         refreshData();
+        setupClickListener();
+    }
+
+    private void setupClickListener() {
         placesViewAdapter.setClickListener(new PlacesViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

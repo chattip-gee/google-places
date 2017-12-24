@@ -13,7 +13,6 @@ import com.fireoneone.android.placesapp.controller.FavoritesController;
 import com.fireoneone.android.placesapp.custom.LatoBoldTextViewCustom;
 import com.fireoneone.android.placesapp.custom.LatoRegularTextViewCustom;
 import com.fireoneone.android.placesapp.model.PlaceItem;
-import com.fireoneone.android.placesapp.stores.SharedPreference;
 import com.fireoneone.android.placesapp.stores.realms.FavoriteItemRealmManager;
 import com.fireoneone.android.placesapp.stores.realms.PlaceItemRealmManager;
 
@@ -29,10 +28,8 @@ public class PlacesViewAdapter extends RecyclerView.Adapter<PlacesViewAdapter.Pl
     private List<PlaceItem> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    SharedPreference sharedPreference;
 
     public PlacesViewAdapter(Context context, List<PlaceItem> data) {
-        sharedPreference = new SharedPreference(context);
         this.mInflater = LayoutInflater.from(context);
         this.context = context;
         this.mData = data;
