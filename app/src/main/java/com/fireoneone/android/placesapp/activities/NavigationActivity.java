@@ -14,11 +14,15 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.fireoneone.android.placesapp.R;
 import com.fireoneone.android.placesapp.bases.BaseActivity;
+import com.fireoneone.android.placesapp.controller.FavoritesController;
+import com.fireoneone.android.placesapp.controller.PlacesController;
 import com.fireoneone.android.placesapp.fragments.NavigationFragment;
+import com.fireoneone.android.placesapp.helpers.NotificationHelper;
 import com.fireoneone.android.placesapp.helpers.types.StatusCodeType;
 import com.fireoneone.android.placesapp.interfaces.CallbackPlaces;
 import com.fireoneone.android.placesapp.managers.FusedLocationSingletonManager;
 import com.fireoneone.android.placesapp.managers.LocationManager;
+import com.fireoneone.android.placesapp.model.PlaceItem;
 import com.fireoneone.android.placesapp.stores.realms.PlaceItemRealmManager;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
@@ -32,7 +36,9 @@ import static com.fireoneone.android.placesapp.utils.Constant.INTENT_FILTER_LOCA
 import static com.fireoneone.android.placesapp.utils.Constant.LBM_EVENT_LOCATION_UPDATE;
 
 public class NavigationActivity extends BaseActivity {
+    private static final int METER = 100;
     protected Location mCurrentLocation;
+    protected Location mPrevLocation;
     protected double mLatitude = 0;
     protected double mLongitude = 0;
     private GeoDataClient mGeoDataClient;
@@ -57,6 +63,26 @@ public class NavigationActivity extends BaseActivity {
             mLongitude = mCurrentLocation.getLongitude();
             String fmLocation = String.format("%s,%s", mLatitude, mLongitude);
             LocationManager.getInstance().setmLocation(fmLocation);
+
+            if (mPrevLocation == null) {
+                mPrevLocation = mCurrentLocation;
+            } else {
+                for (PlaceItem placeItem : PlacesController.getInstance().getPlacesList()) {
+                    if (FavoritesController.getInstance().getFavByObject(placeItem).isFavorite()) {
+                        mPrevLocation.setLatitude(placeItem.getLat());
+                        mPrevLocation.setLongitude(placeItem.getLng());
+                        float distance = mCurrentLocation.distanceTo(mPrevLocation);
+                        if (distance > METER) {
+                            NotificationHelper.notificationMessage(getBaseContext(),
+                                    getResources().getString(R.string.app_name),
+                                    getResources().getString(R.string.you_approached_favorite_places, placeItem.getName()),
+                                    placeItem.getId());
+                            mPrevLocation = mCurrentLocation;
+                        }
+                    }
+                }
+            }
+
         }
     }
 
