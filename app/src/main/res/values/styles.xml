@@ -1,0 +1,96 @@
+<resources>
+
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="App.Activity" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:windowActionBar">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+    <style name="App.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:windowActionBar">true</item>
+    </style>
+
+    <style name="AppTheme.Dialog">
+        <item name="android:layout_width">@dimen/dp_328</item>
+        <item name="android:minWidth">@dimen/dp_328</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_dialog</item>
+        <item name="android:padding">@dimen/dp_16</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="android:Widget.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_44</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bg_button_standard</item>
+        <item name="android:textColor">@color/standard_button_text_color</item>
+    </style>
+
+    <style name="AppTheme.Button.decline" parent="android:Widget.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_44</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bg_button_decline</item>
+        <item name="android:textColor">@color/standard_button_text_color</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Info">
+        <item name="android:layout_width">291dp</item>
+        <item name="android:minWidth">291dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_dialog</item>
+        <item name="android:padding">14dp</item>
+    </style>
+
+    <style name="AppTheme.Button.Info" parent="android:Widget.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bg_button_standard</item>
+        <item name="android:textColor">@color/standard_button_text_color</item>
+    </style>
+
+    <style name="AppTheme.ImageView" parent="aspect_fit">
+
+    </style>
+
+    <style name="aspect_fill">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="aspect_fit">
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="LayoutMatch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="AppTheme.EditText" parent="android:Widget.EditText">
+        <item name="android:textSize">@dimen/sp_14</item>
+    </style>
+
+    <style name="AppTheme.TextView">
+        <item name="android:textSize">@dimen/sp_12</item>
+    </style>
+</resources>

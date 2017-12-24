@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/standard_app_color</color>
+    <color name="colorPrimaryDark">#0096A5</color>
+    <color name="colorAccent">@color/standard_app_color</color>
+
+    <color name="standard_app_color">#01BBD4</color>
+
+    <color name="standard_heading1_text_color">#000000</color>
+    <color name="standard_heading2_text_color">#404040</color>
+
+    <color name="standard_content1_text_color">#1C1C1C</color>
+    <color name="standard_content2_text_color">#aaaaaa</color>
+    <color name="standard_content3_text_color">@color/md_white_1000</color>
+
+    <color name="standard_background_color">@color/md_white_1000</color>
+
+    <color name="standard_button_text_color">@color/md_white_1000</color>
+    <color name="standard_button_background">@color/standard_app_color</color>
+
+    <color name="alternate_button_text_color">@color/standard_app_color</color>
+    <color name="alternate_button_background">#adaaae</color>
+
+    <color name="standard_dialog_title">@color/standard_heading1_text_color</color>
+    <color name="standard_dialog_description">@color/standard_content1_text_color</color>
+
+    <color name="standard_edit_text_color1">#0096A5</color>
+    <color name="standard_edit_text_color2">@color/standard_app_color</color>
+    <color name="standard_edit_text_color3">@color/md_white_1000</color>
+
+    <color name="standard_border_color">#979797</color>
+    <color name="standard_line_color">#dcdcdc</color>
+
+    <color name="standard_error_text_color">#ff4500</color>
+
+    <color name="loading_background">@color/standard_app_color</color>
+
+    <color name="dialog_header_color">#515151</color>
+    <color name="dialog_description_color">#7c7c7c</color>
+    <color name="dialog_text_color">#a8a8a8</color>
+    <color name="dialog_background_color">#464646</color>
+
+    <color name="transparent_background1">#00000000</color>
+    <color name="transparent_background2">#80000000</color>
+</resources>
