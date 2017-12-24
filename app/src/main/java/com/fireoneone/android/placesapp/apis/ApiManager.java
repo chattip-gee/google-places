@@ -15,7 +15,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class ApiManager {
-    public static final String API_KEY = "AIzaSyDRJyV_p--0RWwrII_kvWUJH2ynOiNbzUY";
+    public static final String API_KEY = "AIzaSyBnKDVPiLV0h5Kh1OKg12fE0JZd1Haupc4";
 
     public void getPlaces(String location, int radius, final CallbackPlaceSearch callbackPlaceSearch) {
         Map<String, String> mapStr = new HashMap<>();
