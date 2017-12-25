@@ -11,7 +11,6 @@ import com.fireoneone.android.placesapp.adapters.FavoritePlacesViewAdapter;
 import com.fireoneone.android.placesapp.bases.BaseFragment;
 import com.fireoneone.android.placesapp.controller.PlacesController;
 import com.fireoneone.android.placesapp.databinding.FragmentPlacesNearbyBinding;
-import com.fireoneone.android.placesapp.interfaces.BaseCallback;
 import com.fireoneone.android.placesapp.managers.Contextor;
 import com.fireoneone.android.placesapp.utils.Constant;
 import com.fireoneone.android.placesapp.utils.Validator;
@@ -56,17 +55,7 @@ public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> 
     }
 
     private void initEvent() {
-        refreshData(new BaseCallback() {
-            @Override
-            public void onApiError(String errorMessage) {
-
-            }
-
-            @Override
-            public void onApiSuccess(String success) {
-
-            }
-        });
+        refreshData();
         setupClickListener();
         setupRefreshPageListener();
     }
@@ -90,25 +79,15 @@ public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> 
             @Override
             public void onRefresh() {
                 binding.refreshPage.setRefreshing(true);
-                refreshData(new BaseCallback() {
-                    @Override
-                    public void onApiError(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onApiSuccess(String success) {
-                        binding.refreshPage.setRefreshing(false);
-                    }
-                });
+                refreshData();
             }
         });
     }
 
-    private void refreshData(BaseCallback baseCallback) {
+    private void refreshData() {
         favoritePlacesViewAdapter.clearAllData();
         favoritePlacesViewAdapter.notifyDataSetChanged();
 
-        baseCallback.onApiSuccess("Success");
+        binding.refreshPage.setRefreshing(false);
     }
 }
