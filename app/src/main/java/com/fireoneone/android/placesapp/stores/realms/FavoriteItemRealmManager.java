@@ -42,7 +42,9 @@ public class FavoriteItemRealmManager {
     public FavoriteItem getFavoriteItem(PlaceItem placeItem) {
         FavoriteItem favoriteItem = realm.where(FavoriteItem.class)
                 .equalTo("placeId", placeItem.getPlaceId())
+                .and()
                 .equalTo("lat", placeItem.getLat())
+                .and()
                 .equalTo("lng", placeItem.getLng())
                 .findFirst();
 
