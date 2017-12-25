@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import com.fireoneone.android.placesapp.R;
 import com.fireoneone.android.placesapp.controller.FavoritesController;
@@ -46,31 +45,32 @@ public class PlacesViewAdapter extends RecyclerView.Adapter<PlacesViewAdapter.Pl
     public void onBindViewHolder(PlacesViewHolder holder, int position) {
         final PlaceItem placeItem = mData.get(position);
         initWidget(holder, placeItem);
-        setupOnCheckedChangeListener(holder, placeItem);
+        setupOnClickListener(holder, placeItem);
     }
 
     private void initWidget(PlacesViewHolder holder, PlaceItem placeItem) {
         holder.textName.setText(placeItem.getName());
         holder.textAddress.setText(placeItem.getAddress());
         holder.textURl.setText(placeItem.getUrl());
+        holder.checkFav.setChecked(false);
 
         if (FavoritesController.getInstance().getFavByObject(placeItem).isFavorite()) {
             holder.checkFav.setChecked(true);
         }
     }
 
-    private void setupOnCheckedChangeListener(final PlacesViewHolder holder, final PlaceItem placeItem) {
-        holder.checkFav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void setupOnClickListener(final PlacesViewHolder holder, final PlaceItem placeItem) {
+        holder.checkFav.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
+            public void onClick(View v) {
+                if (!holder.checkFav.isChecked()) {
                     holder.checkFav.setChecked(false);
                 } else {
                     holder.checkFav.setChecked(true);
                 }
 
                 FavoriteItemRealmManager.getInstance().addFavoriteItem(placeItem.getPlaceId(),
-                        placeItem.getLat(), placeItem.getLng(), isChecked);
+                        placeItem.getLat(), placeItem.getLng(), holder.checkFav.isChecked());
             }
         });
     }
