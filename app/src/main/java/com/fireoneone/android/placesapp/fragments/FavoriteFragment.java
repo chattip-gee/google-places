@@ -80,6 +80,7 @@ public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> 
             public void onRefresh() {
                 binding.refreshPage.setRefreshing(true);
                 refreshData();
+                binding.refreshPage.setRefreshing(false);
             }
         });
     }
@@ -87,7 +88,5 @@ public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> 
     private void refreshData() {
         favoritePlacesViewAdapter.clearAllData();
         favoritePlacesViewAdapter.notifyDataSetChanged();
-
-        binding.refreshPage.setRefreshing(false);
     }
 }
