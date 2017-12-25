@@ -13,6 +13,7 @@ import com.fireoneone.android.placesapp.controller.FavoritesController;
 import com.fireoneone.android.placesapp.custom.LatoBoldTextViewCustom;
 import com.fireoneone.android.placesapp.custom.LatoRegularTextViewCustom;
 import com.fireoneone.android.placesapp.model.PlaceItem;
+import com.fireoneone.android.placesapp.stores.realms.FavoriteItemRealmManager;
 import com.fireoneone.android.placesapp.stores.realms.PlaceItemRealmManager;
 
 import java.util.Collections;
@@ -45,13 +46,14 @@ public class FavoritePlacesViewAdapter extends RecyclerView.Adapter<FavoritePlac
     public void onBindViewHolder(PlacesViewHolder holder, int position) {
         final PlaceItem placeItem = mData.get(position);
         initWidget(holder, placeItem);
+        setupOnClickListener(holder, placeItem);
     }
 
     private void initWidget(PlacesViewHolder holder, PlaceItem placeItem) {
         holder.textName.setText(placeItem.getName());
         holder.textAddress.setText(placeItem.getAddress());
         holder.textURl.setText(placeItem.getUrl());
-        holder.checkFav.setEnabled(false);
+        holder.checkFav.setChecked(false);
 
         if (FavoritesController.getInstance().getFavByObject(placeItem).isFavorite()) {
             holder.containerDetail.setVisibility(View.VISIBLE);
@@ -61,6 +63,22 @@ public class FavoritePlacesViewAdapter extends RecyclerView.Adapter<FavoritePlac
         if (!FavoritesController.getInstance().getFavByObject(placeItem).isFavorite()) {
             holder.containerDetail.setVisibility(View.GONE);
         }
+    }
+
+    private void setupOnClickListener(final PlacesViewHolder holder, final PlaceItem placeItem) {
+        holder.checkFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!holder.checkFav.isChecked()) {
+                    holder.checkFav.setChecked(false);
+                } else {
+                    holder.checkFav.setChecked(true);
+                }
+
+                FavoriteItemRealmManager.getInstance().addFavoriteItem(placeItem.getPlaceId(),
+                        placeItem.getLat(), placeItem.getLng(), holder.checkFav.isChecked());
+            }
+        });
     }
 
     @Override
