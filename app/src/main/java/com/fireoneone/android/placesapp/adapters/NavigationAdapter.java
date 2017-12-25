@@ -23,9 +23,9 @@ public class NavigationAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new PlacesNearByFragment();
+                return PlacesNearByFragment.newInstance();
             case 1:
-                return new FavoriteFragment();
+                return FavoriteFragment.newInstance();
         }
         return null;
     }

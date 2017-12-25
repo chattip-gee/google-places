@@ -1,6 +1,7 @@
 package com.fireoneone.android.placesapp.fragments;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.fireoneone.android.placesapp.R;
@@ -29,6 +30,27 @@ public class NavigationFragment extends BaseFragment<FragmentNavigationBinding> 
         navigationAdapter = new NavigationAdapter(getFragmentManager());
         binding.vpPages.setAdapter(navigationAdapter);
         binding.tblPages.setupWithViewPager(binding.vpPages);
+
+        binding.vpPages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    PlacesNearByFragment.newInstance().onPageSelected();
+                } else if (position == 1) {
+                    FavoriteFragment.newInstance().onPageSelected();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initEvent() {

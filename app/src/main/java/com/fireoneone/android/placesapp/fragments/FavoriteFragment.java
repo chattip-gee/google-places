@@ -11,14 +11,23 @@ import com.fireoneone.android.placesapp.adapters.FavoritePlacesViewAdapter;
 import com.fireoneone.android.placesapp.bases.BaseFragment;
 import com.fireoneone.android.placesapp.controller.PlacesController;
 import com.fireoneone.android.placesapp.databinding.FragmentPlacesNearbyBinding;
+import com.fireoneone.android.placesapp.interfaces.NavigationController;
 import com.fireoneone.android.placesapp.managers.Contextor;
 import com.fireoneone.android.placesapp.utils.Constant;
 import com.fireoneone.android.placesapp.utils.Validator;
 
-public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> {
+public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> implements NavigationController {
+    static FavoriteFragment favoriteFragment;
     private int numberOfColumns = 1;
     GridLayoutManager mLayoutManager;
     FavoritePlacesViewAdapter favoritePlacesViewAdapter;
+
+    public static FavoriteFragment newInstance() {
+        if (favoriteFragment == null) {
+            favoriteFragment = new FavoriteFragment();
+        }
+        return favoriteFragment;
+    }
 
     @Override
     protected void afterLoadContentView(View view, Bundle savedInstanceState) {
@@ -78,7 +87,6 @@ public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> 
         binding.refreshPage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                binding.refreshPage.setRefreshing(true);
                 refreshData();
                 binding.refreshPage.setRefreshing(false);
             }
@@ -88,5 +96,10 @@ public class FavoriteFragment extends BaseFragment<FragmentPlacesNearbyBinding> 
     private void refreshData() {
         favoritePlacesViewAdapter.clearAllData();
         favoritePlacesViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPageSelected() {
+        refreshData();
     }
 }

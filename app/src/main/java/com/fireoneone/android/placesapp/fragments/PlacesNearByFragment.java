@@ -14,6 +14,7 @@ import com.fireoneone.android.placesapp.controller.PlacesController;
 import com.fireoneone.android.placesapp.databinding.FragmentPlacesNearbyBinding;
 import com.fireoneone.android.placesapp.interfaces.CallbackPlaceDetails;
 import com.fireoneone.android.placesapp.interfaces.CallbackPlaceSearch;
+import com.fireoneone.android.placesapp.interfaces.NavigationController;
 import com.fireoneone.android.placesapp.managers.Contextor;
 import com.fireoneone.android.placesapp.managers.LocationManager;
 import com.fireoneone.android.placesapp.model.google_service.PlaceDetailsBaseModel;
@@ -23,10 +24,18 @@ import com.fireoneone.android.placesapp.stores.realms.PlaceItemRealmManager;
 import com.fireoneone.android.placesapp.utils.Constant;
 import com.fireoneone.android.placesapp.utils.Validator;
 
-public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBinding> {
+public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBinding> implements NavigationController {
+    static PlacesNearByFragment placesNearByFragment;
     private int numberOfColumns = 1;
     GridLayoutManager mLayoutManager;
     PlacesViewAdapter placesViewAdapter;
+
+    public static PlacesNearByFragment newInstance() {
+        if (placesNearByFragment == null) {
+            placesNearByFragment = new PlacesNearByFragment();
+        }
+        return placesNearByFragment;
+    }
 
     @Override
     protected void afterLoadContentView(View view, Bundle savedInstanceState) {
@@ -142,5 +151,10 @@ public class PlacesNearByFragment extends BaseFragment<FragmentPlacesNearbyBindi
                 }
             }
         });
+    }
+
+    @Override
+    public void onPageSelected() {
+        refreshData();
     }
 }
