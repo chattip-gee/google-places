@@ -1,6 +1,7 @@
 package com.fireoneone.android.placesapp.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.fireoneone.android.placesapp.custom.LatoRegularTextViewCustom;
 import com.fireoneone.android.placesapp.model.PlaceItem;
 import com.fireoneone.android.placesapp.stores.realms.FavoriteItemRealmManager;
 import com.fireoneone.android.placesapp.stores.realms.PlaceItemRealmManager;
+import com.fireoneone.android.placesapp.utils.Validator;
 
 import java.util.Collections;
 import java.util.List;
@@ -52,10 +54,19 @@ public class PlacesViewAdapter extends RecyclerView.Adapter<PlacesViewAdapter.Pl
         holder.textName.setText(placeItem.getName());
         holder.textAddress.setText(placeItem.getAddress());
         holder.textURl.setText(placeItem.getUrl());
+        holder.textURl.setPaintFlags(holder.textURl.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.checkFav.setChecked(false);
 
         if (FavoritesController.getInstance().getFavByObject(placeItem).isFavorite()) {
             holder.checkFav.setChecked(true);
+        }
+
+        if(!Validator.isNullOrEmpty(placeItem.getUrl())){
+            holder.textURl.setVisibility(View.VISIBLE);
+        }
+
+        if(Validator.isNullOrEmpty(placeItem.getUrl())){
+            holder.textURl.setVisibility(View.GONE);
         }
     }
 
@@ -71,6 +82,13 @@ public class PlacesViewAdapter extends RecyclerView.Adapter<PlacesViewAdapter.Pl
 
                 FavoriteItemRealmManager.getInstance().addFavoriteItem(placeItem.getPlaceId(),
                         placeItem.getLat(), placeItem.getLng(), holder.checkFav.isChecked());
+            }
+        });
+
+        holder.textURl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Validator.openBrowser(context, placeItem.getUrl());
             }
         });
     }

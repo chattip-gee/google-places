@@ -1,6 +1,8 @@
 package com.fireoneone.android.placesapp.utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.Editable;
 import android.util.Patterns;
 
@@ -96,8 +98,10 @@ public class Validator {
         return url;
     }
 
-    public static String changePhone(String phone) {
-        return phone.startsWith("+") ? phone.substring(1).replaceAll(" ", "") : phone.replaceAll(" ", "");
+    public static void openBrowser(Context context, String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(validateUrl(url)));
+        browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(browserIntent);
     }
 
     public static boolean isSmallScreen(Context c) {
@@ -122,7 +126,7 @@ public class Validator {
 
     public static String getValidEmptyValue(String input) {
         if (input == null || input.length() == 0) {
-            return "- ";
+            return "-";
         }
 
         return input;
